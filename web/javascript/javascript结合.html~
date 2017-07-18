@@ -1,0 +1,12 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title></title>
+</head>
+<body>
+<script type="text/javascript" src="js.js">
+//不要在script标签里面是在这个外部添加的情况下是不能之行的，很棒啊哈哈
+</script>
+</body>
+</html>

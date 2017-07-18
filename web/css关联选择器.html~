@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>选择器</title>
+<style type="text/css">
+div.hah{
+background-color: blue;
+}
+div#hahha{
+background-color: red;}
+</style>
+</head>
+<body>
+<div class="hah">hhh</div>
+<div id="hahha">nimei</div>
+</body>
+</html>

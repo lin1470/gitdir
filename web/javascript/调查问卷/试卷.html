@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>恋爱调查问卷</title>
+<link rel="stylesheet"type="text/css" href="调查问卷.css">
+</head>
+<body onload="timer('time')">
+<div id="header">大学生恋爱观调查问卷</div>
+<div align="center"><p>hello,艾瑞博迪，这里是一群小可爱们的调查问卷调查，帅气美丽的你们一定会帮助我们完成的吧！（假的）</p></div>
+<hr>
+	<div class="content">
+        <h3>1.你的性别是什么？</h3>    
+            <li><input type="radio" name="radio0"><span>男</span></li>
+            <li><input type="radio" name="radio0"><span>女</span></li>
+    </div>
+    <div class="content">
+        <h3>2.目前你的恋爱状况更符合下列情况中的哪一种？</h3>    
+            <li><input type="radio" name="radio1" value="you"><span>现在还没有考虑恋爱问题</span></li>
+				<li><input type="radio" name="radio1" value="are"><span>正在寻找合适的恋爱对象</span></li>
+            <li><input type="radio" name="radio1" value="right"><span>决定大学期间不谈恋爱</span></li>            
+            <li><input type="radio" name="radio1" value="hh"><span>其他</span></li>
+    </div>
+    <div class="content">
+    		<h3>3.你认为大学期间的恋爱是？</h3>
+
+			<li><input type="radio" name="radio2"><span>一段真挚的感情，是人生不可或缺的宝贵经历</span></li>
+			<li><input type="radio" name="radio2"><span>寻找合适的另一半的过程</span></li>
+			<li><input type="radio" name="radio2"><span>派遣时间</span></li>
+			<li><input type="radio" name="radio2"><span>其他</span></li>    		
+    
+    </div>
+    <div class="content">
+    		<h3>4.如果你遇到喜欢的人，你会？</h3>
+    		<li><input type="radio" name="radio3"><span>大胆地主动追求</span></li>
+    		<li><input type="radio" name="radio3"><span>会有暗示</span></li>
+    		<li><input type="radio" name="radio3"><span>单相思</span></li>
+    		<li><input type="radio" name="radio3"><span>静观而已</span></li>
+    </div>
+
+  
+    <div class="content">
+    		<h3 style="color:red;">5.你认为大学谈恋爱的动机是什么？(多选题)</h3>
+    		<li><input type="checkbox" name="checkbox0"><span>积累经验，体验人生</span></li>
+    		<li><input type="checkbox" name="checkbox0"><span>丰富生活</span></li>
+    		<li><input type="checkbox" name="checkbox0"><span>寻找生活伴侣</span></li>
+    		<li><input type="checkbox" name="checkbox0"><span>证明自身价值与魅力</span></li>
+    
+    </div>
+ 	<div id="form">
+ 	<h2 style="color:blue;">最后，请填入你的个人信息：</h2>
+    <form action="submit.html" onsubmit="return validate()">
+		名字（最多 10 个字符）：<input  type="text" id="fname" size="20"><br />
+		电子邮件:<input style="margin-left:118px;" type="text" id="email" size="20"><br />
+			<br />
+		<input style="text-align: center;width: 500px;font-weight: bold;font-size: 20px;" type="submit" value="提交"> 
+		</form>
+	</div>
+	<div id="timeformat">
+	<p id="time">剩余的时间是：</p>
+	</div>
+</body>
+<script type="text/javascript" src="调查问卷.js">
+
+</script>
+</html>
+

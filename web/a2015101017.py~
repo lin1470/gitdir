@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title></title>
+</head>
+<body>
+<script language="javascript">
+var a=1
+while(a<=5)
+{
+  document.write("<h",a,">这是标题文字</h",a,">");
+ a++;
+}
+</script>
+
+</body>
+</html>

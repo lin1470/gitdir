@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>css的扩展选择器</title>
+<style type="text/css">
+div p{
+background-color: blue;}
+div,p{	
+background-color:red;}
+</style>
+</head>
+<body>
+<div><p>这个关联选择器</p></div>
+<div>组合选择器</div>
+<p>组合选择器</p>
+</body>
+</html>

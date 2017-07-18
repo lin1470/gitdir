@@ -1,0 +1,30 @@
+<html>
+<head>
+<meta charset="utf-8" />
+<title>jhh</title>
+</head>
+<body onload="timer();">
+<script language=javascript>
+/*var int=self.setInterval("clock();",50)
+function clock()
+  {
+  var t=new Date()
+  document.getElementById("clock").value=t
+  }
+  */
+  function timer() {
+  var t=60;
+  setInterval("clock(t);",1000);
+
+  }
+  function clock(t) {
+   t--;
+   document.getElementById("time").innerHTML=t;
+  	
+  }
+</script>
+<div>
+<p id="time">nimei</p>
+</div>
+</body>
+</html>
