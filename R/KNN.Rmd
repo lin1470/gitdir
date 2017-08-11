@@ -1,0 +1,32 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+k<-5
+set.seed(1234)
+index<-sample(1:2,150,replace=T,prob = c(0.8,0.2))#train0.8 other 0.2 for test
+train_data<-iris[index==1,]
+test_data<- iris[index==2,]
+dis<-matrix(0,ncol=nrow(train_data),nrow=nrow(test_data))
+```
+
+remember that if you want to use 2d data ,the fomattion is [1,2] not like c language [1][1]
+```{r}
+for(i in 1:nrow(dis)){
+  for(j in 1:ncol(dis)){
+    dis[i,j]<- ((test_data[i,1]-train_data[j,1])^2+(test_data[i,2]-train_data[j,2])^2+(test_data[i,3]-train_data[j,3])^2+(test_data[i,4]-train_data[j,4])^2)^0.5
+  }
+  index1<- order(dis[i,])#sort funcion 
+  try_data<-train_data[index1[1:k],]#
+  tab <- table(try_data[,5])
+  test_data[i,6]<- which.max(tab)
+}
+table(test_data[,5],test_data[,6])
+```
+sort function order()
+```{r}
+order(dis[1,])
+```
+

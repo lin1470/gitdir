@@ -1,0 +1,57 @@
+---
+title: "recommender"
+author: "Bruce"
+date: "August 8, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+rm(list=ls())
+```
+```{r}
+library(recommenderlab)
+data <- read.csv('/home/bruce/gitdir/R/webmodeling88/traindata.csv',stringsAsFactors = F,row.names = 1)
+test<- read.csv('/home/bruce/gitdir/R/webmodeling88/testdata.csv',stringsAsFactors = F,row.names = 1)
+```
+```{r}
+data1 <- as(data,'binaryRatingMatrix')
+test1 <- as(test,'binaryRatingMatrix')
+mode <- Recommender(data1,method = 'IBCF')#contribute a model
+```
+```{r}
+pre <- predict(mode,data1,n= 5 ,type='topN')
+pre1 <- as(pre,'list')
+```
+```{r}
+eva_s <- evaluationScheme(data1, method="cross-validation", k=10, given = 1)
+```
+
+```{r}
+algorithms <- list(popular = list(name = "POPULAR", param = NULL),
+ubcf = list(name = "UBCF", param = NULL), ibcf = list(name = "IBCF", param = NULL))
+```
+```{r}
+eva <-evaluate(eva_s,algorithms,type='topNList',n=1:10)
+```
+```{r}
+plot(eva,annotate= 1:3,legend="topleft")
+plot(eva,"prec/rec",annotate= 1:3)
+```
+```{r}
+library(arules)
+ip <- unique(data[,1])
+tdata <- list()
+for (i in ip){
+  tdata[[as.character(i)]] <- data[data[,1] %in% i,2]
+}
+data2 <- as(tdata,'transactions')
+mod1 <- apriori(data2,parameter = list(support = 0.01,confidence=0.2))
+inspect(mod1)
+```
+

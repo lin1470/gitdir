@@ -1,0 +1,32 @@
+---
+title: "moment"
+author: "Bruce"
+date: "August 6, 2017"
+output: pdf_document
+---
+```{r}
+data<- read.csv("/home/bruce/Desktop/data_exercise/moment.csv",sep = ',',header = T)
+
+```
+
+```{r}
+set.seed(123)
+index<-sample(1:2,nrow(data),replace = TRUE,prob = c(0.7,0.3));
+train_data<-data[index==1,]
+test_data<-data[index==2,]
+table(test_data$leibie)
+library(nnet)
+out<-class.ind(train_data$leibie)
+netMod<-nnet(train_data[,3:11],out,size=8,maxit=1000,softmax = T)
+summary(netMod)
+
+pre<-predict(netMod,test_data[,3:11],type='class');pre
+temp<-table(pre,test_data[,1]);temp#
+num<-sum(diag(temp))/nrow(test_data)
+paste0('the accuracy is:',round(num*100,2),'%')
+```
+```{r}
+old.packages()
+update.packages()
+```
+

@@ -1,0 +1,106 @@
+---
+title: "recommend"
+author: "Bruce"
+date: "August 8, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+2. 1 导入训练集与测试集数据
+```{r}
+train_data <- read.csv('/home/bruce/gitdir/R/web87/train_data.csv',stringsAsFactors = F)
+test_data <- read.csv('/home/bruce/gitdir/R/web87/test_data.csv',stringsAsFactors = F)
+test_data <- test_data[,-1]
+train_data <- train_data[,-1]
+```
+2 建立用户物品矩阵
+```{r}
+fullURL <- unique(train_data$fullURL)
+realIp <- unique(train_data$realIP)
+```
+user matrix
+```{r}
+user_matrix <- matrix(0,nrow = length(realIp), ncol = length(fullURL))
+colnames(user_matrix) <- fullURL
+rownames(user_matrix) <- realIp
+
+```
+```{r}
+for(i in 1:nrow(train_data)){
+  user_matrix[as.character(train_data[i,1]),train_data[i,2]] <- 1
+}
+sum(user_matrix)
+```
+```{r}
+sum(user_matrix[,1]|user_matrix[,2])
+sum(user_matrix[,1]&user_matrix[,2])
+```
+
+3 建立物品相似度矩阵
+
+```{r}
+sim <- matrix(0,length(fullURL),length(fullURL))
+colnames(sim) <- fullURL
+rownames(sim) <- fullURL
+
+```
+original,maybe wrong
+```{r}
+for(i in 2:length(fullURL)){
+  for(j in 1:(i-1)){
+    similarity <- sum(user_matrix[,i]&user_matrix[,j])/sum(user_matrix[,i]|user_matrix[,j])
+    sim[i,j] <- similarity
+  }
+}
+
+```
+```{r}
+for(i in 1:(length(fullURL)-1)){
+  for(j in (i+1):length(fullURL)){
+    sim[i,j] <- sum(rowSums(user_matrix[,c(i,j)]) == 2)/sum(rowSums(user_matrix[,c(i,j)])!=0)
+    sim[j,i] <- sim[i,j]
+  }
+}
+```
+
+4 把物品相似度矩阵的对角元素改为0
+```{r}
+diag(sim) <- 0
+```
+
+5 把测试集中的URL按IP分开
+```{r}
+temp <- list()
+for( i in 1:length(realIp)){
+  temp[[as.character(realIp[i])]] <- train_data[train_data$realIP %in% realIp[i],'fullURL']
+}
+temp
+```
+```{r}
+rem <- cbind(test_data,matrix(0,nrow=nrow(test_data),ncol = 2))
+rem
+```
+
+6  判断测试集的网页是否出现在物品相似度矩阵
+```{r}
+for(i in 1:nrow(test_data)){
+  if(rem[i,2] %in% colnames(sim)){
+    ind <- which.max(sim[i,])
+    rem[i,3] <- names(ind)
+    rem[i,4] <-  as.numeric(rem[i,3] %in% temp[[as.character(rem[i,1])]] )
+  }
+}
+```
+
+7 推荐相关系数最大的网页
+8 判断推荐网页是否在IP用户的浏览记录里
+9 计算正确率
+```{r}
+h <- sum(rem[,3]==0)
+sum(rem[,4])/(nrow(test_data)-h)
+```
+

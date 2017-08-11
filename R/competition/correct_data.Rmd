@@ -1,0 +1,84 @@
+---
+title: "corret_data"
+author: "Bruce"
+date: "August 10, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+1	取‘realIP’、‘fullURL’列
+2	删除网址‘？’及后面的部分
+3	删除不含‘.html‘的网址
+4	找出带翻页的网址
+5	将翻页网址还原
+6	筛选出婚姻类网址
+7	去重
+8	筛选浏览记录2次以上的IP
+
+```{r}
+rm(list=ls())
+```
+只取其中一类的数据
+```{r}
+data_total <- read.csv("jingsaiData.csv",stringsAsFactors = F)
+```
+
+提取竞赛类的网页数据
+```{r}
+data <- read.csv("jingsaiData.csv",stringsAsFactors = F)
+data <- data[,-1]#remove the first column
+```
+
+
+# 2	删除网址‘？’及后面的部分
+发现并没有？的网页
+```{r}
+grep("\\?",data$page_path)
+```
+
+
+
+找出带翻页的网址
+index1 <- grep('_\\d+', data$fullURL)
+sdata <- data[index1,]
+找出带翻页的个数
+```{r}
+length(grep("_\\d+",data$page_path))
+#data$page_path[grep("_\\d+",data$page_path)]
+```
+
+将翻页网址还原
+data$fullURL <- gsub('_\\d+','',data$fullURL)
+```{r}
+data$page_path <- gsub("_\\d+","",data$page_path)
+```
+
+
+	去重
+hdata <- unique(hdata)
+```{r}
+data <- unique(data)
+```
+
+	筛选浏览记录1次以上的IP
+
+```{r}
+p <- table(data$ip);length(p)
+ip <- names(p[p>1]);length(ip)
+
+```
+
+根据IP来提取网页的数据
+```{r}
+data_cleansing <- data[data$ip %in% ip,]
+# data_cleansing <- data
+```
+保存数据
+```{r}
+write.csv(data_cleansing,file = "data_cleansing.csv")
+```
+

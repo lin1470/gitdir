@@ -1,0 +1,136 @@
+---
+title: "web"
+author: "Bruce"
+date: "August 7, 2017"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+```{r}
+library(DBI)
+library(RMySQL)
+con <- dbConnect(MySQL(), host='127.0.0.1',port=3306,
+                 dbname='test', user='root', password='qertu1014')
+dbSendQuery(con,'set character_set_results=gbk')
+dbSendQuery(con,'set character_set_connection = gbk')
+dbSendQuery(con,'set character_set_database =gbk')
+dbSendQuery(con,'set character_set_client =gbk')
+temp<-dbSendQuery(con,'select * from all_gzdata')
+data <- dbFetch(temp, n=-1)
+dbDisconnect(con)
+
+```
+
+```{r}
+temp<- table(data$fullURLId);temp
+cha<- names(temp);cha
+index<- unique(substr(cha,1,3));index;
+leng<-vector()
+count<-0
+for(i in index){
+  k<-length(grep(i,data$fullURLId))
+  leng<- c(leng,k)
+}
+names(leng)<-index;index;
+
+```
+
+```{r}
+per<-leng
+per<-round(leng*100/nrow(data),2)
+names(per)<-index
+library(RColorBrewer)
+x <- barplot(per,col =brewer.pal(9,"YlOrRd")[2:9],main='percentage')
+x
+text(x,per+2,format(paste0(per,'%')),xpd=TRUE)
+```
+
+```{r}
+data101<-data[grep('101',data$fullURLId),]
+```
+```{r}
+sort(table(data101$fullURLId),decreasing=T)
+```
+
+```{r}
+data101[grep('101003',data101$fullURLId)[1:3],]
+```
+extract websites id with "199"
+```{r}
+data199<- data[grep("199",data$fullURLId),]
+rm(data101)
+```
+
+```{r}
+data_fagui<- data[grep("faguizt",data$fullURL),];
+nrow(data_fagui)
+```
+```{r}
+
+data199[grep("faguizt",data$fullURL),c("fullURLId")][1:10]
+data199[grep("faguizt",data$fullURL),c("fullURLId","userID")][1:10,]
+
+```
+```{r}
+length(grep('\\?',data199$fullURL))
+```
+```{r}
+data[c(1,23,4),][1:2]
+```
+```{r}
+table(data$realIP)
+realIP <- sort(table(as.character(table(data$realIP))),decreasing=T)
+realIP1<- c(realIP[1:7],sum(realIP)-sum(realIP[1:7]))
+
+```
+
+```{r}
+per_realIP <- round(realIP1*100/sum(realIP),2)
+library(RColorBrewer)
+x1 <- barplot(per_realIP,col =brewer.pal(9,"YlOrRd")[2:10],main='percentage')
+text(x1,per_realIP+2,format(paste0(per_realIP,'%')),xpd=TRUE)
+```
+```{r}
+y <- barplot(per_realIP,col =brewer.pal(9,"YlOrRd")[2:10],main='percentage',horiz=T)
+text(per_realIP+2,y,format(paste0(per_realIP,'%')),xpd=TRUE)
+```
+```{r}
+table(table(data$realIP))
+sort(table(data$realIP),decreasing=T)[1:10]
+```
+```{r}
+data[grep('3812410744',as.character(data$realIP)),'fullURL'][1:10]
+```
+```{r}
+realIP
+sum(realIP[8:100])#sum up the numbers fo click users
+sum(realIP[which(realIP>100&realIP<=1000)])
+```
+```{r}
+tab<-table(data$realIP)
+
+```
+
+```{r}
+sum(tab<=100&tab>7)
+sum(tab<=1000 & tab>100)
+sum(tab>1000 )
+```
+
+```{r}
+tab_only_one<-tab[tab==1]
+only_one_ip <- names(tab_only_one)
+tdata<- data[data$realIP %in% only_one_ip,]#it is so hard to jutsfy to what to use.
+length(grep('ask',tdata$fullURL))
+```
+```{r}
+sort(table(data$fullURL),decreasing = T)[1:10]
+```
+
+
+```{r}
+data_107 <- data[grep('107',data$fullURL),]
+```
+

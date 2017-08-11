@@ -1,0 +1,70 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  word_document: default
+---
+```{r}
+x<-c(1:10)
+y<-c(11:20)#this is the 2D matrix .
+k<- 2
+center1<- c(x[1],y[1])
+center2<-c(x[2],y[2])
+dis<-matrix(nrow=length(x),ncol=k+1)
+colnames(dis)<-c('dis_cen1',"dis_cen2","class")
+c(x[3],y[3])
+while(TRUE){
+  for(i in 1:length(x)){
+    #calculate each value distance one by one and judge which center is shotest center
+    dis[i,1]<- sqrt((x[i]-center1[1])^2+(y[i]-center2[2])^2)
+    dis[i,2]<- ((x[i]-center2[1])^2+(y[i]-center2[2])^2)^0.5
+    dis[i,3]<-which.min(dis[i,1:2])
+  }
+  dis
+  #print("return boolean value")
+  dis[,3]==1#return boolean value
+  #print("find the new center1 and center2")
+  (center1new<-c(mean(x[dis[,3]==1]),mean(y[dis[,3]==1])))
+  (center2new<-c(mean(x[dis[,3]==2]),mean(y[dis[,3]==2])))
+  if(sum(center1==center1new)+sum(center2==center2new)==4){
+    break
+  }
+  center1<- center1new
+  center2<- center2new
+  
+}          
+```
+
+```{r}
+a<-c(1,2,3,4,5)
+b<-c(1,1,1,1,1)
+a<b
+```
+we can apply function in a libaray to directly implement this effect 
+```{r}
+iris2<- iris
+iris2$Species<- NULL
+iris2
+(kmeans_result<-kmeans(iris2,3))
+
+```
+
+
+```{r}
+table(iris$Species,kmeans_result$cluster)
+```
+
+```{r}
+plot(iris2[c("Sepal.Length","Sepal.Width")],col=kmeans_result$cluster)
+points(kmeans_result$centers[,c("Sepal.Length","Sepal.Width")],col=1:3,pch=7,cex=3)
+```
+
+```{r}
+iris
+(centers<- kmeans_result$centers[kmeans_result$cluster,])
+(distance<-sqrt(rowSums((iris2-centers)^2)))
+(outliers<-order(distance,decreasing = T)[1:5])
+print (outliers)
+print(iris2[outliers,])
+```
+

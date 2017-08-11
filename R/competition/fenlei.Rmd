@@ -1,0 +1,53 @@
+---
+title: "fenlei"
+author: "Bruce"
+date: "August 10, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+rm(list = ls())
+```
+根据之前的关键字，打开网页，看每个网页大概是属于哪个类型的。
+```{r}
+
+data1 <- read.csv("/home/bruce/Desktop/data_exercise/Untitled Folder/竞赛网2月份数据/竞赛网2月份数据.csv",sep = ',', stringsAsFactors = F)
+
+# 1	取‘page_path’、‘ip’ broswer_type列
+myData <- data1[,c('page_path','ip','browser_type')]
+
+index <- grep("\\/\\w",myData$page_path)
+myData <- myData[index,]
+
+myData <- myData[-grep("Robot",myData$browser_type),]#去除掉爬虫的网页记录
+myData <- myData[,-3]
+myData <- myData[-grep("jrtd|zzry|HS|P3|gzs|P2|GG|ggg|LH|czdl|pxjs|pxrz|jjfa|tdb|qyjjfa|zjtd|cpfw|gsjj|pxdt|pxkc|hb|HB|bbs|tddt|gxjjfa",myData$page_path),]#去掉无效的，或者过时的网页记录
+#提取教学网页
+techData <- myData[grep("yxzp|wzsj|ganhuofenxiang|tj|rmpx|zytj|tts|sjfxs|sjsdf|jmg|jiao|dsjkf|asdf|ts|information|jmgj|yxsp|jxsp|tg",myData$page_path),]
+techData <- techData[-grep("/%",techData$page_path),]#
+#提取竞赛的网页
+jingsaiData <- myData[grep("sjfxs|shiximingdan|jszz|zzszl|huojiangmingdan|saizhi|qk|szjs|xiuzuop|jsz|stpj|yxzp|cgal|firsttipdm|secondtipdm|thirdtipdm|fourthtipdm|jingsa|kjxm|qk|sdfasf|sm|td",myData$page_path),]
+#提取企业的网页
+qiyeData <- myData[grep("kjxm|qyal|xtxm|wjxq|zxns|zzszl",myData$page_path),]
+#提取新闻的网页
+newsData <- myData[grep("peixunxinxi|news|notice|notices|sj",myData$page_path),]
+#提取其他类的网页
+otherData <- myData[grep("fh|lxwm|gyrs|wjxq|xtxm|xmxs|xmfh|rcfh|yxp|fourthly|cgal",myData$page_path),]
+
+```
+store four kinds of data to the memory
+保存在内存中
+```{r}
+write.csv(qiyeData,file="qiyeData.csv")
+write.csv(jingsaiData,file = "jingsaiData.csv")
+write.csv(newsData,file = "newsData.csv")
+write.csv(techData,file = "techData.csv")
+write.csv(otherData,file = "otherData.csv")
+```
+

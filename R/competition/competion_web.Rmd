@@ -1,0 +1,84 @@
+---
+title: "competion"
+author: "Bruce"
+date: "August 9, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+# 获取关键字
+```{r}
+rm(list = ls())
+```
+
+```{r}
+data_total <- read.csv("/home/bruce/Desktop/data_exercise/Untitled Folder/竞赛网2月份数据/竞赛网2月份数据.csv",sep = ',', stringsAsFactors = F)
+data <- read.csv("/home/bruce/Desktop/data_exercise/Untitled Folder/竞赛网2月份数据/竞赛网2月份数据.csv",sep = ',', stringsAsFactors = F)
+```
+import by data.table/如果上面的方法是不能导入的话，就得用这个个方法来导入，一共120432条数据
+```{r}
+# class(data。table)
+# library(data.table)
+# data1 <- fread("/home/bruce/Desktop/data_exercise/Untitled Folder/新建文件夹/竞赛网2月份数据.csv")
+# data2 <- as.data.frame(data1)
+```
+
+
+清除那些从爬虫得来的网页
+```{r}
+(table(data$browser_type))#查看网页类型
+data <- data[-grep("Robot/Spider",data$browser_type),]#清楚爬虫类型
+```
+kind of website/
+```{r}
+data <- data[grep("\\/\\w+",data$page_path),]#去除掉/这个根目录的网页
+```
+提取只含有page_path和ip两列的数据，其他的应该是用不上的了
+```{r}
+data <- data[,c("page_path","ip")]
+```
+提取关键字的应用
+```{r}
+library(stringr)
+web_site <- data$page_path#获取网页，并赋值一个变量
+web_site1 <- na.omit(str_extract(web_site,".*/((\\d*)|index).jhtml"))#观察大多数的关键字都是在/数字或者index形式的，所以用这个正则表达式来提取出来，na.omit 函数是去除掉省缺值
+keys<-gsub("/((\\d*)|index).jhtml","",web_site1)#去掉后面的数字或者index就是关键字
+#na.omit(keys)#ignore the none number
+keys<- gsub("/","",keys)#去掉根目录
+keys<- na.omit(keys)#清除省缺值
+keys <- unique(keys)#去重
+keys <- keys[grep("\\w+",keys)]#去掉一个空字符和两个奇怪的的
+length(keys)
+```
+创建一个向量，这个向量是包含着一个关键字的浏览网页的次数
+```{r}
+keys_list <- vector(mode ="numeric",length = length(keys) )
+count <- 1
+for(key in keys){
+  keys_list[count] <- length(grep(paste0("/",key,"/"),web_site))
+  count <- count+1
+}
+names(keys_list) <- keys
+keys_list <- sort(keys_list,decreasing = T)
+length(web_site1)
+length(web_site)
+sum(keys_list)
+```
+
+```{r}
+keys_list<- keys_list[keys_list>=100]
+sum(keys_list)
+```
+```{r}
+sort(table(web_site),decreasing = T)
+```
+
+
+
+
+
+

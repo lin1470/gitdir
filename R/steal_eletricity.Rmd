@@ -1,0 +1,23 @@
+```{r}
+Data<-read.csv("/home/bruce/gitdir/R/tel.csv")
+Data[,"liushi"]<-as.factor(Data[,"liushi"])
+set.seed(123)
+ind<-sample(2,nrow(Data),replace = T,prob=c(0.7,0.3))
+traindata<-Data[ind==1,]
+testdata<-Data[ind==2,]
+library(party)
+ctree.model<-ctree(liushi~.,data=traindata)#all the variables
+plot(ctree.model,type="simple")
+plot(ctree.model,type="extended")
+
+```
+
+```{r}
+(train_predict<- predict(ctree.model))
+(test_predict<- predict(ctree.model,newdata=testdata))
+train_predictdata<- cbind(traindata,predictedclass = train_predict)
+(train_confusion<-table(actual=traindata$liushi,predictedclass=train_predict))#confusion matrix
+test_predictdata<-cbind(testdata,predictedclass=test_predict)
+```
+
+hshdsd

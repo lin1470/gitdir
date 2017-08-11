@@ -1,0 +1,50 @@
+---
+title: "asociation_rules"
+author: "Bruce"
+date: "August 6, 2017"
+output: html_document
+---
+http://blog.csdn.net/gjwang1983/article/details/45015203
+we can see all the data on this website
+import this library
+```{r}
+library(arules)
+```
+this means that it has 169 items
+this is a 0-1 matrix
+```{r}
+data("Groceries")
+summary(Groceries)
+```
+imformation of transaction 
+```{r}
+9835*169*0.02609146
+Groceries
+colnames(Groceries)[1:5]#all the item names
+inspect(Groceries[1:5])
+```
+```{r}
+rules<- apriori(Groceries,parameter = list(support = 0.001,confidence=0.5));rules
+```
+```{r}
+(basketSize<- size(Groceries))
+```
+
+```{r}
+inspect(rules[1:5])# the lift means that the probility of buying is notbuying 2.870009
+```
+how to convert a rules to the vector or the list?
+if i can't use the normal method 
+```{r}
+rule
+inspect(rules[1:5])
+```
+```{r}
+class(rules)
+```
+
+```{r}
+order_rules<- sort(rules,by="lift")
+inspect(order_rules[1:5])
+```
+

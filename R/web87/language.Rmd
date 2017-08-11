@@ -1,0 +1,60 @@
+---
+title: "r_language"
+author: "Bruce"
+date: "August 8, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+state <- c("tas",
+"qld",
+"sa",
+"sa",
+"sa",
+"vic",
+"nt",
+"act",
+"qld",
+"nsw",
+"wa",
+"nsw",
+"nsw",
+"vic",
+"vic",
+"vic",
+"nsw",
+"qld",
+"qld",
+"vic",
+"nt", "wa", "wa",
+"qld", "sa", "tas",
+"nsw", "nsw", "wa",
+"act")
+statef <- factor(state);statef
+levels(statef)
+```
+
+```{r}
+4/7
+```
+```{r}
+a <- matrix(1:12,3,4);a
+colnames(a) <- c('a','b','c','d')
+rownames(a) <- c('1','2','3');a
+a['1','b']
+```
+```{r}
+incomes <- c(60, 49, 40, 61, 64, 60, 59, 54, 62, 69, 70, 42, 56,
+61, 61, 61, 58, 51, 48, 65, 49, 49, 41, 48, 52, 46,
+59, 46, 58, 43)
+```
+
+```{r}
+incmeans <- tapply(incomes, state, mean);incmeans
+mean(incomes)
+```
+

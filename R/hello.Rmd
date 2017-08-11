@@ -1,0 +1,87 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r}
+mydata<-read.table('/home/bruce/Desktop/data_exercise/stupaper.csv',sep=',',header = TRUE,stringsAsFactors = FALSE)#if translate the other one
+#mydata<-read.csv(file = )
+```
+## jj
+```{r}
+hdata<-mydata[,3:5]
+st_data<-scale(hdata)
+mydata['StuScore']<-st_data
+```
+# row for mean of all the st_data instead of the mean().
+```{r}
+mydata$StuScore<-rowMeans(st_data)
+mydata$StuScore
+```
+```{r}
+temp <- quantile(mydata$StuScore,c(0.2,0.4,0.6,0.8))
+temp[1:4]
+h<- 1
+score_class<- c()
+while(h<11){
+  if (mydata$StuScore[h]<temp[1]){
+    score_class[h] <- 'e'}
+  else if (mydata$StuScore[h]<temp[2]){
+    score_class[h] <- 'd'}
+  else if (mydata$StuScore[h]<temp[3]){
+    score_class[h] <- 'c'}
+  else if (mydata$StuScore[h]<temp[4]){
+    score_class[h] <- 'b'}
+  else
+  {
+     score_class[h] <-'a'
+    }
+  h <- h+1
+}
+mydata$score_class<- score_class
+mydata
+```
+
+
+
+```{r}
+other_data<- read.csv("/home/bruce/Desktop/data_exercise/stupaper.csv")
+rm("other_data")
+```
+```{r}
+name<-strsplit(mydata$StuName,"\\?")
+first_name<- c()
+last_name<- c()
+name[[1]][2]
+name
+for(i in 1:nrow(mydata)){
+  mydata$first_name1[i]<-name[[i]][1]
+  mydata$last_name1[i]<-name[[i]][2]
+}
+
+mydata
+```
+```{r}
+mydata$FirstName<-sapply(name,'[',1)
+mydata$LastName<-sapply(name,'[',2)
+```
+
+```{r}
+adata<-mydata
+ncol(adata)
+hist(mydata$Math,breaks = 12,col = 'red',xlab = 'bale')
+```
+
+```{r}
+plot(iris[,-5],col=iris$Species)
+iris
+```
+
+```{r}
+x<-barplot(mydata$Math,main='Math Score',names.arg = mydata$FirstName)
+text(x,mydata$Math+25,format(mydata$Math),,xpd=TRUE,col='red')
+```
+```{r}
+
+```
+

@@ -1,0 +1,69 @@
+```{r}
+library(stringr)
+example_obj<- 'small is the best!'
+str_extract(example_obj,'s.all')
+str_extract(example_obj,'s[a-z]all')
+str_extract(example_obj,'best|small')
+str_extract(example_obj,"[a-z]{3}")
+```
+
+```{r}
+shopping_list <- c("apples x4", "bag of flour", "bag of sugar", "milk x2")
+str_extract(shopping_list, "\\d")
+str_extract(shopping_list, "[a-z]+")
+str_extract(shopping_list, "[a-z]{1,4}")#one to four letter
+str_extract(shopping_list, "\\b[a-z]{1,4}\\b")
+```
+
+```{r}
+str_extract_all(shopping_list, "[a-z]+")
+print('\n')
+str_extract_all(shopping_list, "\\b[a-z]+\\b")
+str_extract_all(shopping_list, "\\d")
+```
+```{r}
+a<- c("word1","word2?")
+gsub("[[:punct:]]","x",a)#replace the special for the 
+gsub("[a-z]?","jj","hello")#replace to the special string for all letter
+```
+square bracket
+```{r}
+chartr("[a-j]","[0-9]","ssdad12hs")#only for the letter,so funny
+```
+```{r}
+str_extract("never23..",'er\\b')#mean that a string in the bound
+str_extract("never11","(er1)\\B")
+```
+
+```{r}
+library(stringr)
+```
+
+```{r}
+x <- c("Hellow", "World", "!") 
+nchar(x)
+```
+
+```{r}
+raw_data<-"555-1239Moe Szyslak(636) 555-0113Burns, C.Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson,Homer5553642Dr. Julius Hibbert"
+#(phone_number<-str_extract_all(raw_data,"([0-9]{7})|([0-9]{3}[ -][0-9]{4})|([0-9]{3}-[0-9]{3}-[0-9]{4})"))
+(phone_number<-str_extract_all(raw_data,"\\(?(\\d{3})?\\)?(-| )?\\d{3}(-| )?\\d{4}"))
+name<-str_extract_all(raw_data,"[[:alpha:] ,.]{2,}")
+name
+```
+
+```{r}
+other_data<- 'J. Doe: 248-555-1234B. Smith: (313) 555-1234A. Lee: (810)555-1234M. Jones: 734.555.9999'
+(phone_number<-str_extract_all(other_data,"([0-9]{3}-[0-9]{3}-[0-9]{4})|(\\([0-9]{3}\\) ?[0-9]{3}-[0-9]{4})|([0-9]+.)+[0-9]{4}"))
+```
+```{r}
+url<-read.table('/home/bruce/Desktop/data_exercise/url.txt')
+url
+(huiyin<-str_extract_all(url,"[[:alpha:]:/.]+hunyin([^_])+"))
+```
+
+```{r}
+grep("/hunyin/.*/\\d+.html",url[,1])
+url[grep("/hunyin/.*/\\d+.html",url[,1]),]
+```
+
